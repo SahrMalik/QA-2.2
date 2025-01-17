@@ -34,8 +34,8 @@ def view_tasks():
     tasks = cursor.fetchall()
     if tasks:
         for task in tasks:
-            print(f"Task ID: {task[0]}, Task Name: {task[1]}, 
-                  Description: {task[2]}, Completed: {'Yes' if task[3] else 'No'}")
+            print(f"""Task ID: {task[0]}, Task Name: {task[1]}, 
+                  Description: {task[2]}, Completed: {'Yes' if task[3] else 'No'}""")
     else:
         print("No Tasks in the DataBase")  
 
