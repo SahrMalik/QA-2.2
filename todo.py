@@ -32,7 +32,7 @@ def view_tasks():
     sql = "SELECT * FROM tasks"
     cursor.execute(sql)
     tasks = cursor.fetchall()
-    if (tasks):
+    if tasks:
         for task in tasks:
             print(f"Task ID: {task[0]}, Task Name: {task[1]}, Description: {task[2]}, Completed: {'Yes' if task[3] else 'No'}")
     else:
