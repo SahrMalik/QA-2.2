@@ -12,12 +12,14 @@
 
 import mysql.connector
 
+import os
+
 db = mysql.connector.connect(
-    host='localhost',
-    user='sahr',
-    password='root',
-    database='todo_list'
-) #Check Connection Settings in MySQL Workbench to get these details
+    host=os.getenv('DB_HOST', 'localhost'),
+    user=os.getenv('DB_USER', 'sahr'),
+    password=os.getenv('DB_PASSWORD', 'root'),
+    database=os.getenv('DB_DATABASE', 'todo_list')
+)
 
 def add_todo(task_name, description):
     cursor = db.cursor()

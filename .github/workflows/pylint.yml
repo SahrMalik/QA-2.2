@@ -1,16 +1,16 @@
-name: CI Pipeline
+name: Pylint and Test
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     services:
       mysql:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: test_todo_list
+          MYSQL_DATABASE: todo_list
           MYSQL_USER: sahr
           MYSQL_PASSWORD: root
         ports:
@@ -18,35 +18,27 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - uses: actions/checkout@v4
-
+    - uses: actions/checkout@v2
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v2
       with:
         python-version: '3.x'
-
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install pylint
         pip install mysql-connector-python
-
-    - name: Wait for MySQL
+    - name: Run tests
+      env:
+        DB_HOST: localhost
+        DB_USER: sahr
+        DB_PASSWORD: root
+        DB_DATABASE: todo_list
       run: |
-        echo "Waiting for MySQL to start..."
-        for i in {1..30}; do
-          if mysqladmin ping -h127.0.0.1 -usahr -proot --silent; then
-            echo "MySQL is ready!"
-            exit 0
-          fi
-          sleep 2
-        done
-        echo "MySQL failed to start"
-        exit 1
-
-    - name: Create test database
+        python -m unittest test_todo.py -v
+    - name: Analyzing the code with pylint
       run: |
-        mysql -h127.0.0.1 -usahr -proot -e "CREATE DATABASE IF NOT EXISTS test_todo_list"
+        pylint $(git ls-files '*.py')
 
-    - name: Run simple test
-      run: |
-        python -m unittest tests/test_todo.py -v
+
+    
