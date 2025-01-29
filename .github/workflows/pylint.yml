@@ -37,9 +37,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install pylint mysql-connector-python
 
+    - name: Debug MySQL Connection
+      run: |
+        echo "Checking if MySQL is reachable..."
+        mysql -h 127.0.0.1 -u sahr -proot -e "SHOW DATABASES;"
+
     - name: Analysing the code with pylint
       run: |
         FILES=$(git ls-files '*.py')
+        echo "Files to lint: $FILES"
         if [ -n "$FILES" ]; then pylint $FILES; else echo "No Python files found."; fi
 
     - name: Wait for MySQL to be ready
