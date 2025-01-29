@@ -63,44 +63,48 @@ def delete_todo(task_id):
     db.commit()
     print("Task deleted successfully!")
 
+def main():
+    print("Welcome to the To-Do List App!")
+    while True:
+        print("\n--- To-Do List ---")
+        print("1. Add Todo")
+        print("2. View Todo")
+        print("3. Mark Todo as Completed")
+        print("4. Update Todo Details")
+        print("5. Delete Todo")
+        print("6. Exit")
 
-while True:
-    print("\n--- To-Do List ---")
-    print("1. Add Todo")
-    print("2. View Todo")
-    print("3. Mark Todo as Completed")
-    print("4. Update Todo Details")
-    print("5. Delete Todo")
-    print("6. Exit")
+        choice = int(input("Please enter your choice: "))
 
-    choice = int(input("Please enter your choice: "))
+        if choice == 1:
+            task_name = input("Enter the todo name: ")
+            description = input("Enter the todo description: ")
+            add_todo(task_name, description)
 
-    if choice == 1:
-        task_name = input("Enter the todo name: ")
-        description = input("Enter the todo description: ")
-        add_todo(task_name, description)
+        elif choice == 2:
+            print("\n--- Todo's ---")
+            view_todo()
 
-    elif choice == 2:
-        print("\n--- Todo's ---")
-        view_todo()
+        elif choice == 3:
+            task_id = int(input("Enter the todo ID to mark as completed: "))
+            todo_completed(task_id)
 
-    elif choice == 3:
-        task_id = int(input("Enter the todo ID to mark as completed: "))
-        todo_completed(task_id)
+        elif choice == 4:
+            task_id = int(input("Enter the todo ID to update: "))
+            task_name = input("Enter the new todo name: ")
+            description = input("Enter the new todo description: ")
+            update_todo(task_id, task_name, description)
 
-    elif choice == 4:
-        task_id = int(input("Enter the todo ID to update: "))
-        task_name = input("Enter the new todo name: ")
-        description = input("Enter the new todo description: ")
-        update_todo(task_id, task_name, description)
+        elif choice == 5:
+            task_id = int(input("Enter the todo ID to delete: "))
+            delete_todo(task_id)
 
-    elif choice == 5:
-        task_id = int(input("Enter the todo ID to delete: "))
-        delete_todo(task_id)
+        elif choice == 6:
+            print("Thanks for using the app. Bye bye!")
+            break
 
-    elif choice == 6:
-        print("Thanks for using the app. Bye bye!")
-        break
-
-    else:
-        print("That's not a valid choice. Please try again.")
+        else:
+            print("That's not a valid choice. Please try again.")
+            
+if __name__ == "__main__":
+    main()
